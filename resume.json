@@ -1,0 +1,146 @@
+{
+  "basics": {
+    "name": "Alex Example",
+    "label": "Senior Software Engineer · AI Systems",
+    "email": "alex.example@example.com",
+    "phone": "+49 170 0000000",
+    "url": "https://example.dev",
+    "summary": "Senior engineer with 8+ years building production AI and platform systems. Experienced leading cross-functional teams, shipping LLM-backed products, and operating reliable cloud services. Seeking EU roles with Blue Card sponsorship; ready to relocate within 30 days.",
+    "image": "./assets/sample-photo.jpg",
+    "location": {
+      "city": "Bengaluru",
+      "countryCode": "IN",
+      "region": "Karnataka"
+    },
+    "profiles": [
+      {
+        "network": "LinkedIn",
+        "username": "alexexample",
+        "url": "https://linkedin.com/in/alexexample"
+      },
+      {
+        "network": "GitHub",
+        "username": "alexexample",
+        "url": "https://github.com/alexexample"
+      }
+    ]
+  },
+  "euMetadata": {
+    "workAuthorization": "Eligible for EU Blue Card (ICT specialist)",
+    "noticePeriod": "30 days",
+    "relocationReady": true,
+    "relocation": "Available for relocation to any EU Member State",
+    "preferredLocations": ["Berlin", "Amsterdam", "Munich", "Remote-EU"],
+    "degreeRecognition": "Master's in Computer Science — comparable to EQF Level 7"
+  },
+  "skills": [
+    {
+      "name": "Languages & Runtimes",
+      "keywords": ["TypeScript", "Python", "Go", "Node.js"]
+    },
+    {
+      "name": "AI / ML",
+      "keywords": ["LLM apps", "RAG", "LangChain", "Prompt engineering", "Evaluation"]
+    },
+    {
+      "name": "Cloud & Platform",
+      "keywords": ["AWS", "Kubernetes", "Docker", "Terraform", "CI/CD"]
+    },
+    {
+      "name": "Data",
+      "keywords": ["PostgreSQL", "Redis", "Kafka", "OpenSearch"]
+    }
+  ],
+  "work": [
+    {
+      "name": "Northstar Labs",
+      "position": "Senior Software Engineer, AI Platform",
+      "url": "https://example.com",
+      "startDate": "2022-01",
+      "endDate": "",
+      "location": "Remote",
+      "summary": "Owned multi-tenant RAG platform and evaluation tooling for internal AI products.",
+      "highlights": [
+        "Built a multi-tenant RAG platform serving 40+ internal products, reducing median answer latency by 35% while cutting infra cost 22%.",
+        "Led a team of 5 engineers to ship evaluation harnesses and guardrails that dropped hallucination-related incidents by 60%.",
+        "Designed event-driven ingestion pipelines processing 12M documents/day with 99.9% success SLA."
+      ]
+    },
+    {
+      "name": "Orbit Systems",
+      "position": "Software Engineer II",
+      "startDate": "2019-03",
+      "endDate": "2021-12",
+      "location": "Remote",
+      "summary": "Owned checkout and billing APIs for a B2B SaaS product.",
+      "highlights": [
+        "Owned checkout and billing APIs handling €8M ARR, improving p95 latency from 420ms to 180ms.",
+        "Introduced typed contracts and contract tests across 3 services, cutting integration failures in staging by 50%.",
+        "Mentored 3 juniors; established on-call runbooks that reduced MTTR from 90 to 35 minutes."
+      ]
+    },
+    {
+      "name": "PixelForge",
+      "position": "Software Engineer",
+      "startDate": "2017-06",
+      "endDate": "2019-02",
+      "location": "Remote",
+      "highlights": [
+        "Shipped real-time collaboration features for a SaaS design tool used by 200k MAU.",
+        "Migrated core services to containerized deploy pipelines, enabling weekly releases with zero-downtime rollouts."
+      ]
+    }
+  ],
+  "education": [
+    {
+      "institution": "Example Institute of Technology",
+      "area": "Computer Science",
+      "studyType": "Master of Technology",
+      "startDate": "2015-07",
+      "endDate": "2017-05",
+      "score": "8.7/10"
+    },
+    {
+      "institution": "Example National Institute",
+      "area": "Computer Science and Engineering",
+      "studyType": "Bachelor of Technology",
+      "startDate": "2011-07",
+      "endDate": "2015-05",
+      "score": "8.4/10"
+    }
+  ],
+  "certifications": [
+    {
+      "name": "AWS Certified Cloud Practitioner",
+      "issuer": "Amazon Web Services (AWS)",
+      "date": "2023"
+    }
+  ],
+  "languages": [
+    {
+      "language": "English",
+      "fluency": "C2"
+    },
+    {
+      "language": "German",
+      "fluency": "A1"
+    },
+    {
+      "language": "Hindi",
+      "fluency": "Native"
+    }
+  ],
+  "projects": [
+    {
+      "name": "OpenEval Kit",
+      "description": "Open-source LLM evaluation toolkit with regression gates for CI.",
+      "url": "https://github.com/alexexample/openeval-kit",
+      "keywords": ["Python", "Evaluation", "CI"]
+    },
+    {
+      "name": "A4 CV Templates",
+      "description": "Pixel-aligned HTML/CSS resume templates for EU A4 print.",
+      "keywords": ["TypeScript", "PDF", "DOCX"]
+    }
+  ]
+}

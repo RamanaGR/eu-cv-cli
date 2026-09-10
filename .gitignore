@@ -1,0 +1,39 @@
+# Dependencies
+node_modules/
+
+# Build
+dist/
+
+# Generated CVs (may contain personal data)
+output/
+
+# Private resume + photo (never commit real data)
+# Ignore contents but keep README/.gitkeep trackable
+input/*
+!input/.gitkeep
+!input/README.md
+
+# Explicit personal resume filenames (if left in repo root)
+RamanaGangarao_resume.json
+*_personal.json
+*.local.json
+
+# Personal / real photos (public repo keeps only dummy assets/sample-photo.jpg)
+assets/photo.jpg
+assets/personal/
+assets/sample-photo1.jpg
+
+# Secrets & env
+.env
+.env.*
+*.pem
+*.key
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.log
+*.swp
+*~
