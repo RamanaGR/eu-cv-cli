@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>{{basics.name}} — CV</title>
+  <style>
+    @page { size: A4; margin: 10mm 12mm; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "Segoe UI", Calibri, "Helvetica Neue", Arial, sans-serif;
+      color: #1e293b;
+      font-size: 9.5pt;
+      line-height: 1.3;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    .layout {
+      display: grid;
+      grid-template-columns: 32% 68%;
+      gap: 0;
+      min-height: 100%;
+    }
+    .sidebar {
+      background: #f8fafc;
+      border-right: 1px solid #e2e8f0;
+      padding: 8px 12px 8px 0;
+      padding-right: 12px;
+    }
+    .main { padding: 4px 0 4px 14px; }
+    .photo-wrap { text-align: center; margin-bottom: 10px; }
+    .photo {
+      width: 100px;
+      height: 100px;
+      border-radius: 6px;
+      object-fit: cover;
+      border: 2px solid #e2e8f0;
+    }
+    h1 {
+      font-size: 16pt;
+      color: #1e3a5f;
+      line-height: 1.15;
+      margin-bottom: 2px;
+    }
+    .label { font-size: 9.5pt; color: #475569; margin-bottom: 8px; }
+    .contact {
+      font-size: 8pt;
+      color: #64748b;
+      margin-bottom: 10px;
+      word-break: break-word;
+    }
+    .contact a { color: #1e3a5f; text-decoration: none; }
+    .eu-banner {
+      background: #1e3a5f;
+      color: #f8fafc;
+      font-size: 7.5pt;
+      font-weight: 600;
+      padding: 6px 8px;
+      margin-bottom: 12px;
+      border-radius: 3px;
+    }
+    h2 {
+      font-size: 8.5pt;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: #1e3a5f;
+      border-bottom: 1px solid #e2e8f0;
+      padding-bottom: 2px;
+      margin: 10px 0 6px;
+    }
+    .side-block { font-size: 8.5pt; margin-bottom: 4px; break-inside: avoid; }
+    .side-block strong { display: block; color: #1e293b; margin-bottom: 1px; }
+    .entry { break-inside: avoid; margin-bottom: 8px; }
+    .entry-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      align-items: baseline;
+    }
+    .entry-title { font-weight: 700; font-size: 10pt; }
+    .entry-sub { font-size: 8.5pt; color: #64748b; font-style: italic; }
+    .entry-dates { font-size: 8pt; color: #64748b; white-space: nowrap; }
+    ul { margin: 3px 0 0 14px; }
+    li { margin-bottom: 2px; }
+    .muted { color: #64748b; font-size: 8pt; }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      {{#if photoDataUrl}}
+      <div class="photo-wrap">
+        <img class="photo" src="{{photoDataUrl}}" alt="Profile photo" />
+      </div>
+      {{/if}}
+
+      <div class="contact">
+        {{#if basics.email}}<div>{{basics.email}}</div>{{/if}}
+        {{#if basics.phone}}<div>{{basics.phone}}</div>{{/if}}
+        {{#if basics.url}}<div><a href="{{basics.url}}">{{basics.url}}</a></div>{{/if}}
+        {{#if basics.location.city}}
+        <div>{{basics.location.city}}{{#if basics.location.countryCode}}, {{basics.location.countryCode}}{{/if}}</div>
+        {{/if}}
+        {{#each basics.profiles}}
+        <div><a href="{{url}}">{{network}}</a></div>
+        {{/each}}
+      </div>
+
+      {{#if euMetadata}}
+      <div class="eu-banner">
+        {{#if euMetadata.workAuthorization}}{{euMetadata.workAuthorization}}<br/>{{/if}}
+        {{#if euMetadata.relocation}}{{euMetadata.relocation}}<br/>{{else}}{{#if euMetadata.relocationReady}}Relocation-ready<br/>{{/if}}{{/if}}
+        {{#if euMetadata.noticePeriod}}Notice: {{euMetadata.noticePeriod}}<br/>{{/if}}
+        {{#if euMetadata.preferredLocations.length}}{{joinList euMetadata.preferredLocations}}{{/if}}
+      </div>
+      {{/if}}
+
+      {{#if skills.length}}
+      <h2>Skills</h2>
+      {{#each skills}}
+      <div class="side-block">
+        <strong>{{name}}</strong>
+        {{joinList keywords}}
+      </div>
+      {{/each}}
+      {{/if}}
+
+      {{#if languages.length}}
+      <h2>Languages</h2>
+      {{#each languages}}
+      <div class="side-block">{{language}} — {{fluency}}</div>
+      {{/each}}
+      {{/if}}
+
+      {{#if certifications.length}}
+      <h2>Certifications</h2>
+      {{#each certifications}}
+      <div class="side-block">
+        <strong>{{name}}</strong>
+        {{#if issuer}}{{issuer}}{{/if}}{{#if date}} · {{date}}{{/if}}
+      </div>
+      {{/each}}
+      {{/if}}
+
+      {{#if euMetadata.degreeRecognition}}
+      <h2>Credentials</h2>
+      <div class="side-block">{{euMetadata.degreeRecognition}}</div>
+      {{/if}}
+    </aside>
+
+    <main class="main">
+      <h1>{{basics.name}}</h1>
+      {{#if basics.label}}<div class="label">{{basics.label}}</div>{{/if}}
+
+      {{#if basics.summary}}
+      <h2>Summary</h2>
+      <p>{{basics.summary}}</p>
+      {{/if}}
+
+      {{#if work.length}}
+      <h2>Experience</h2>
+      {{#each work}}
+      <div class="entry">
+        <div class="entry-head">
+          <div>
+            <div class="entry-title">{{position}}</div>
+            <div class="entry-sub">{{name}}{{#if location}} · {{location}}{{/if}}</div>
+          </div>
+          <div class="entry-dates">{{formatDateRange startDate endDate}}</div>
+        </div>
+        {{#if summary}}<p class="muted" style="font-style: italic; margin-top: 2px;">{{summary}}</p>{{/if}}
+        {{#if highlights.length}}
+        <ul>{{#each highlights}}<li>{{this}}</li>{{/each}}</ul>
+        {{/if}}
+      </div>
+      {{/each}}
+      {{/if}}
+
+      {{#if education.length}}
+      <h2>Education</h2>
+      {{#each education}}
+      <div class="entry">
+        <div class="entry-head">
+          <div>
+            <div class="entry-title">{{#if studyType}}{{studyType}}{{#if area}}, {{area}}{{/if}}{{else}}{{area}}{{/if}}</div>
+            <div class="entry-sub">{{institution}}{{#if score}} · {{score}}{{/if}}</div>
+          </div>
+          <div class="entry-dates">{{formatDateRange startDate endDate}}</div>
+        </div>
+      </div>
+      {{/each}}
+      {{/if}}
+
+      {{#if projects.length}}
+      <h2>Projects</h2>
+      {{#each projects}}
+      <div class="entry">
+        <div class="entry-title">{{name}}{{#if url}} <span class="muted">{{url}}</span>{{/if}}</div>
+        {{#if description}}<p>{{description}}</p>{{/if}}
+        {{#if keywords.length}}<p class="muted">{{joinList keywords}}</p>{{/if}}
+        {{#if highlights.length}}
+        <ul>{{#each highlights}}<li>{{this}}</li>{{/each}}</ul>
+        {{/if}}
+      </div>
+      {{/each}}
+      {{/if}}
+    </main>
+  </div>
+</body>
+</html>

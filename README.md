@@ -1,55 +1,96 @@
 # EU CV CLI
 
-Terminal CLI that turns a `resume.json` into **A4 PDF** and **Microsoft Word (`.docx`)** CVs tailored for European tech hiring — including EU Blue Card / relocation metadata and a professional photo.
+TypeScript / Node.js CLI that converts resume JSON into **A4 PDF** and **Microsoft Word (`.docx`)** CVs for European tech hiring — EU Blue Card / relocation metadata, professional photo, and ATS-friendly layouts.
 
-> **Status:** Design docs only (`PLAN.md` + this README). Implementation starts after explicit approval.
+## Privacy (public repo)
 
-## Who it’s for
+This repository is public. **Do not commit real personal data.**
 
-International tech candidates (e.g. India → Europe) who need:
+| Path | Committed? | Purpose |
+|------|------------|---------|
+| [`resume.json`](./resume.json) | Yes | Dummy sample only (`Alex Example`) |
+| [`assets/sample-photo.jpg`](./assets/sample-photo.jpg) | Yes | Dummy placeholder headshot |
+| `input/` | **No** (gitignored) | Your real resume + photo |
+| `output/` | **No** (gitignored) | Generated PDFs / DOCXs |
 
-- ATS-friendly A4 layouts
-- Native `.docx` without title/date collisions
-- Clear EU mobility signals (Blue Card eligibility, notice period, relocation)
-- A professional headshot (common expectation in DE / NL / AT / Nordics)
+Put your real files under `input/` (see [`input/README.md`](./input/README.md)):
 
-## Planned features
+```bash
+npm run generate -- -i ./input/RamanaGangarao_resume.json -t tech-modern
+```
 
-| Feature | Detail |
-|---------|--------|
-| Formats | PDF (Playwright) + DOCX (`docx`) |
-| Validation | Zod schema against `resume.json` |
-| Photo | Optional `basics.image`; sample includes `assets/sample-photo.jpg` |
-| Templates | 3 pluggable layouts (see below) |
-| Stack | TypeScript, Node.js ESM, Commander, Handlebars |
+## Features
 
-## Templates (v1)
+- Strict **Zod** validation of resume data
+- **3 pluggable templates** — generate **one at a time** (interactive menu or `-t`)
+- **PDF** via Playwright + Handlebars HTML
+- **DOCX** via the `docx` library (native Word, no title/date collisions)
+- Optional headshot (`basics.image`, path relative to the JSON file)
+- EU mobility banner (Blue Card, notice period, relocation, target cities)
 
-| ID | Description |
-|----|-------------|
-| `tech-modern` | Single-column navy/charcoal; circular photo top-right (**default**) |
-| `classic-eu` | Formal EU header; rectangular photo top-left |
-| `compact-sidebar` | Two-column; photo + skills/languages/EU meta in left sidebar |
+## Requirements
 
-## Planned usage (after implementation)
+- Node.js **≥ 18**
+- Chromium for Playwright (one-time install)
+
+## Setup
 
 ```bash
 npm install
 npx playwright install chromium
+```
 
-# Default: tech-modern → PDF + DOCX into ./output
-npm run generate -- --input ./resume.json
+## Usage
 
-# Explicit flags
-npx tsx src/cli.ts \
-  --input ./resume.json \
-  --template classic-eu \
-  --format pdf,docx \
-  --outdir ./output
+Default input: [`resume.json`](./resume.json) (dummy data — safe for demos).
 
-# Smoke tests
-npm run test-run       # tech-modern only
-npm run test-run:all   # all three templates × both formats
+### Interactive (pick one template)
+
+```bash
+npm run generate
+```
+
+```
+Select a template:
+
+  1) tech-modern       Tech Modern
+  2) classic-eu        Classic EU
+  3) compact-sidebar   Compact Sidebar
+
+Enter number (1-3) or template id:
+```
+
+### Pass a template directly
+
+```bash
+npm run generate -- -t tech-modern
+npm run generate -- -t classic-eu
+npm run generate -- -t compact-sidebar
+```
+
+### npm shortcuts
+
+```bash
+npm run generate:tech-modern
+npm run generate:classic-eu
+npm run generate:compact-sidebar
+```
+
+### Your private resume
+
+```bash
+npm run generate -- -i ./input/RamanaGangarao_resume.json -t tech-modern
+npm run generate -- -i ./input/RamanaGangarao_resume.json -t classic-eu -f pdf
+```
+
+### Formats & output directory
+
+```bash
+# PDF only (dummy sample)
+npm run generate -- -t classic-eu -f pdf
+
+# Custom output folder
+npm run generate -- -i ./input/RamanaGangarao_resume.json -t tech-modern -o ./output
 ```
 
 ### CLI flags
@@ -57,41 +98,82 @@ npm run test-run:all   # all three templates × both formats
 | Flag | Default | Description |
 |------|---------|-------------|
 | `-i, --input` | `./resume.json` | Path to resume JSON |
-| `-t, --template` | `tech-modern` | Template id |
+| `-t, --template` | *(interactive prompt)* | `tech-modern`, `classic-eu`, or `compact-sidebar` |
 | `-f, --format` | `pdf,docx` | Comma-separated: `pdf`, `docx` |
-| `-o, --outdir` | `./output` | Output directory |
+| `-o, --outdir` | `./output` | Output directory (gitignored) |
 
-### Output files
+```bash
+npm run generate -- --help
+```
+
+### Output naming
 
 ```
 ./output/{Full_Name}_CV_{templateId}.pdf
 ./output/{Full_Name}_CV_{templateId}.docx
 ```
 
-## Resume data (planned shape)
+Example (dummy): `./output/Alex_Example_CV_tech-modern.pdf`
 
-High-level sections in `resume.json`:
+Only the selected template is generated (not all three).
 
-- **`basics`** — name, title, contact, links, summary, optional **`image`** (path relative to the JSON file)
-- **`euMetadata`** — work authorization, notice period, relocation, degree recognition
-- **`skills`** — grouped keyword lists
-- **`work`** — reverse-chronological roles with XYZ-style bullets
-- **`education`**, **`languages`** (CEFR), **`projects`**
+## Templates
 
-Full field contract and architecture live in [`PLAN.md`](./PLAN.md).
+| ID | Layout | Photo | Best for |
+|----|--------|-------|----------|
+| `tech-modern` | Single-column, navy/charcoal | Circular, top-right | Modern SaaS / product roles |
+| `classic-eu` | Formal single-column | Rectangular, top-left | DE/NL traditional ATS + human review |
+| `compact-sidebar` | Two-column | Top of left sidebar | Dense senior / skills-heavy profiles |
 
-## Photo notes
+## Resume JSON schema
 
-- Set `basics.image` to a local path (e.g. `./assets/your-photo.jpg`).
-- Paths resolve relative to the **input JSON directory**, so the resume + photo can travel together.
-- PDF embeds via data URL; Word via native image run.
-- If the path is missing, templates still generate without a photo (no crash).
+| Section | Notes |
+|---------|--------|
+| `basics` | Name, label, contact, profiles, summary, optional `image` |
+| `euMetadata` | `workAuthorization`, `noticePeriod`, `relocationReady`, `relocation`, `preferredLocations`, `degreeRecognition` |
+| `skills` | Grouped keyword lists |
+| `work` | Roles with dates, optional `summary`, XYZ-style `highlights` |
+| `education` | Degrees, dates, score |
+| `certifications` | Name, issuer, date |
+| `languages` | CEFR / proficiency labels |
+| `projects` | Description + keywords |
 
-## Project docs
+Empty or `"Present"` end dates render as **Present**. Photo paths resolve relative to the **JSON file directory**, not `cwd`. Missing photos skip embedding (no crash).
 
-- **[`PLAN.md`](./PLAN.md)** — architecture, file tree, implementation watchlist, verification checklist, approval gate.
-- **This README** — product overview and intended usage.
+## Project layout
 
-## Approval
+```
+eu-cv-cli/
+├── resume.json                 # dummy sample (safe to commit)
+├── assets/sample-photo.jpg     # dummy placeholder photo
+├── input/                      # YOUR real resume + photo (gitignored)
+│   ├── README.md
+│   ├── .gitkeep
+│   ├── RamanaGangarao_resume.json   # local only
+│   └── photo.jpg                    # local only
+├── output/                     # generated files (gitignored)
+├── package.json
+├── PLAN.md
+├── README.md
+└── src/
+    ├── cli.ts
+    ├── schema/
+    ├── core/
+    ├── utils/
+    └── templates/
+```
 
-Implementation is **blocked** until you approve [`PLAN.md`](./PLAN.md). Reply with approval (and any plan tweaks) to start coding.
+## Stack
+
+| Piece | Library |
+|-------|---------|
+| CLI | Commander |
+| Validation | Zod |
+| HTML | Handlebars |
+| PDF | Playwright (Chromium) |
+| Word | `docx` |
+
+## Docs
+
+- [`PLAN.md`](./PLAN.md) — architecture, watchlist, verification notes
+- [`input/README.md`](./input/README.md) — where to keep private resume data

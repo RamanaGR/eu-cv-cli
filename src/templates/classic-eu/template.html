@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>{{basics.name}} — CV</title>
+  <style>
+    @page { size: A4; margin: 12mm 15mm; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: Georgia, "Times New Roman", Times, serif;
+      color: #1e293b;
+      font-size: 10pt;
+      line-height: 1.32;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    .header {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      border-bottom: 1.5px solid #1e293b;
+      padding-bottom: 10px;
+      margin-bottom: 10px;
+    }
+    .photo {
+      width: 78px;
+      height: 96px;
+      object-fit: cover;
+      border: 1px solid #e2e8f0;
+      flex-shrink: 0;
+    }
+    .header-text { flex: 1; }
+    h1 {
+      font-size: 18pt;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: #1e293b;
+    }
+    .label {
+      font-family: "Segoe UI", Calibri, Arial, sans-serif;
+      font-size: 10pt;
+      margin-top: 4px;
+      color: #334155;
+    }
+    .contact {
+      font-family: "Segoe UI", Calibri, Arial, sans-serif;
+      font-size: 8.5pt;
+      color: #64748b;
+      margin-top: 6px;
+    }
+    .contact a { color: #1e3a5f; text-decoration: none; }
+    .eu-banner {
+      font-family: "Segoe UI", Calibri, Arial, sans-serif;
+      font-size: 8.5pt;
+      font-weight: 600;
+      color: #1e3a5f;
+      border: 1px solid #e2e8f0;
+      padding: 5px 8px;
+      margin-bottom: 12px;
+      text-align: center;
+    }
+    h2 {
+      font-family: "Segoe UI", Calibri, Arial, sans-serif;
+      font-size: 9.5pt;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #1e293b;
+      border-bottom: 1px solid #e2e8f0;
+      padding-bottom: 2px;
+      margin: 12px 0 6px;
+    }
+    .entry { break-inside: avoid; margin-bottom: 8px; }
+    .entry-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      font-family: "Segoe UI", Calibri, Arial, sans-serif;
+    }
+    .entry-title { font-weight: 700; font-size: 10pt; }
+    .entry-sub { font-size: 9pt; color: #64748b; font-style: italic; }
+    .entry-dates { font-size: 9pt; color: #64748b; white-space: nowrap; }
+    ul {
+      font-family: "Segoe UI", Calibri, Arial, sans-serif;
+      margin: 3px 0 0 14px;
+      font-size: 9.5pt;
+    }
+    li { margin-bottom: 2px; }
+    p, .skills-row {
+      font-family: "Segoe UI", Calibri, Arial, sans-serif;
+      font-size: 9.5pt;
+    }
+    .skills-row { margin-bottom: 3px; }
+    .muted { color: #64748b; font-size: 8.5pt; }
+  </style>
+</head>
+<body>
+  <header class="header">
+    {{#if photoDataUrl}}
+    <img class="photo" src="{{photoDataUrl}}" alt="Profile photo" />
+    {{/if}}
+    <div class="header-text">
+      <h1>{{basics.name}}</h1>
+      {{#if basics.label}}<div class="label">{{basics.label}}</div>{{/if}}
+      <div class="contact">
+        {{#if basics.email}}{{basics.email}}{{/if}}
+        {{#if basics.phone}} · {{basics.phone}}{{/if}}
+        {{#if basics.url}} · <a href="{{basics.url}}">{{basics.url}}</a>{{/if}}
+        {{#if basics.location.city}} · {{basics.location.city}}{{#if basics.location.countryCode}}, {{basics.location.countryCode}}{{/if}}{{/if}}
+        {{#each basics.profiles}} · <a href="{{url}}">{{network}}</a>{{/each}}
+      </div>
+    </div>
+  </header>
+
+  {{#if euMetadata}}
+  <div class="eu-banner">
+    {{#if euMetadata.workAuthorization}}{{euMetadata.workAuthorization}}{{/if}}
+    {{#if euMetadata.relocation}} · {{euMetadata.relocation}}{{else}}{{#if euMetadata.relocationReady}} · Relocation-ready{{/if}}{{/if}}
+    {{#if euMetadata.noticePeriod}} · Notice: {{euMetadata.noticePeriod}}{{/if}}
+    {{#if euMetadata.preferredLocations.length}} · Targets: {{joinList euMetadata.preferredLocations}}{{/if}}
+  </div>
+  {{/if}}
+
+  {{#if basics.summary}}
+  <h2>Professional Summary</h2>
+  <p>{{basics.summary}}</p>
+  {{/if}}
+
+  {{#if work.length}}
+  <h2>Professional Experience</h2>
+  {{#each work}}
+  <div class="entry">
+    <div class="entry-head">
+      <div>
+        <div class="entry-title">{{position}}, {{name}}</div>
+        {{#if location}}<div class="entry-sub">{{location}}</div>{{/if}}
+      </div>
+      <div class="entry-dates">{{formatDateRange startDate endDate}}</div>
+    </div>
+    {{#if summary}}<p class="muted" style="font-style: italic; margin-top: 2px;">{{summary}}</p>{{/if}}
+    {{#if highlights.length}}
+    <ul>{{#each highlights}}<li>{{this}}</li>{{/each}}</ul>
+    {{/if}}
+  </div>
+  {{/each}}
+  {{/if}}
+
+  {{#if education.length}}
+  <h2>Education</h2>
+  {{#each education}}
+  <div class="entry">
+    <div class="entry-head">
+      <div>
+        <div class="entry-title">{{institution}}</div>
+        <div class="entry-sub">{{#if studyType}}{{studyType}}{{#if area}}, {{area}}{{/if}}{{else}}{{area}}{{/if}}{{#if score}} · {{score}}{{/if}}</div>
+      </div>
+      <div class="entry-dates">{{formatDateRange startDate endDate}}</div>
+    </div>
+  </div>
+  {{/each}}
+  {{/if}}
+
+  {{#if certifications.length}}
+  <h2>Certifications</h2>
+  {{#each certifications}}
+  <div class="skills-row"><strong>{{name}}</strong>{{#if issuer}} · {{issuer}}{{/if}}{{#if date}} · {{date}}{{/if}}</div>
+  {{/each}}
+  {{/if}}
+
+  {{#if skills.length}}
+  <h2>Skills</h2>
+  {{#each skills}}
+  <div class="skills-row"><strong>{{name}}:</strong> {{joinList keywords}}</div>
+  {{/each}}
+  {{/if}}
+
+  {{#if languages.length}}
+  <h2>Languages</h2>
+  <p>{{#each languages}}{{language}} ({{fluency}}){{#unless @last}} · {{/unless}}{{/each}}</p>
+  {{/if}}
+
+  {{#if projects.length}}
+  <h2>Selected Projects</h2>
+  {{#each projects}}
+  <div class="entry">
+    <div class="entry-title">{{name}}{{#if url}} <span class="muted">{{url}}</span>{{/if}}</div>
+    {{#if description}}<p>{{description}}</p>{{/if}}
+    {{#if keywords.length}}<p class="muted">{{joinList keywords}}</p>{{/if}}
+    {{#if highlights.length}}
+    <ul>{{#each highlights}}<li>{{this}}</li>{{/each}}</ul>
+    {{/if}}
+  </div>
+  {{/each}}
+  {{/if}}
+
+  {{#if euMetadata.degreeRecognition}}
+  <h2>Degree Recognition</h2>
+  <p>{{euMetadata.degreeRecognition}}</p>
+  {{/if}}
+</body>
+</html>

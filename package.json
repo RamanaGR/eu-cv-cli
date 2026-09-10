@@ -1,0 +1,39 @@
+{
+  "name": "eu-cv-cli",
+  "version": "1.0.0",
+  "description": "CLI that converts resume.json into A4 PDF and DOCX CVs for European tech hiring",
+  "type": "module",
+  "bin": {
+    "eu-cv": "./src/cli.ts"
+  },
+  "scripts": {
+    "generate": "tsx src/cli.ts",
+    "generate:tech-modern": "tsx src/cli.ts --template tech-modern",
+    "generate:classic-eu": "tsx src/cli.ts --template classic-eu",
+    "generate:compact-sidebar": "tsx src/cli.ts --template compact-sidebar"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "cv",
+    "resume",
+    "pdf",
+    "docx",
+    "eu",
+    "cli"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "commander": "^13.1.0",
+    "docx": "^9.2.0",
+    "handlebars": "^4.7.8",
+    "playwright": "^1.51.0",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.10",
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.2"
+  }
+}
