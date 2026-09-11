@@ -70,12 +70,15 @@
       padding-bottom: 3px;
       margin: 14px 0 8px;
     }
-    .entry { break-inside: avoid; margin-bottom: 10px; }
+    /* Allow long roles to split across pages (avoids large blank gaps). */
+    .entry { break-inside: auto; margin-bottom: 10px; }
     .entry-head {
       display: flex;
       justify-content: space-between;
       gap: 12px;
       align-items: baseline;
+      break-inside: avoid;
+      break-after: avoid;
     }
     .entry-title { font-weight: 700; font-size: 10.5pt; }
     .entry-sub { font-size: 9.5pt; color: #64748b; font-style: italic; }

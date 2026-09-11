@@ -23,12 +23,13 @@ program
   )
   .option('-f, --format <list>', 'Comma-separated formats: pdf,docx', 'pdf,docx')
   .option('-o, --outdir <path>', 'Output directory', './output')
+  .option('--no-photo', 'Omit profile photo even if basics.image is set')
   .addHelpText(
     'after',
     () =>
       `\nTemplates:\n${listTemplates()
         .map((t) => `  ${t.id.padEnd(18)} ${t.description}`)
-        .join('\n')}\n\nExamples:\n  npm run generate -- -t tech-modern\n  npm run generate -- -t classic-eu -f pdf\n  npm run generate\n`,
+        .join('\n')}\n\nExamples:\n  npm run generate -- -t tech-modern\n  npm run generate -- -t tech-modern --no-photo\n  npm run generate -- -t classic-eu -f pdf\n  npm run generate\n`,
   );
 
 program.parse();
@@ -38,6 +39,8 @@ const opts = program.opts<{
   template?: string;
   format: string;
   outdir: string;
+  /** false when `--no-photo` is passed (Commander `--no-*` convention) */
+  photo: boolean;
 }>();
 
 async function promptTemplateId(): Promise<string> {
@@ -107,11 +110,16 @@ async function main(): Promise<void> {
   const data = parseResume(raw);
 
   const resumeDir = path.dirname(inputPath);
-  const photo = await resolvePhoto(data.basics.image, resumeDir);
+  const omitPhoto = opts.photo === false;
+  const photo = omitPhoto
+    ? null
+    : await resolvePhoto(data.basics.image, resumeDir);
   const photoDataUrl = photo ? toDataUrl(photo) : null;
   const photoBuffer = photo ? toImageBuffer(photo) : null;
 
-  const baseName = `${filenameSlug(data.basics.name)}_CV_${template.id}`;
+  const baseName = omitPhoto
+    ? `${filenameSlug(data.basics.name)}_CV_${template.id}_nophoto`
+    : `${filenameSlug(data.basics.name)}_CV_${template.id}`;
   const written: string[] = [];
 
   if (formats.includes('pdf')) {

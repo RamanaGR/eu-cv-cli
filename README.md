@@ -26,6 +26,7 @@ npm run generate -- -i ./input/RamanaGangarao_resume.json -t tech-modern
 - **PDF** via Playwright + Handlebars HTML
 - **DOCX** via the `docx` library (native Word, no title/date collisions)
 - Optional headshot (`basics.image`, path relative to the JSON file)
+- `--no-photo` to generate a photo-free CV without editing resume JSON
 - EU mobility banner (Blue Card, notice period, relocation, target cities)
 
 ## Requirements
@@ -93,6 +94,16 @@ npm run generate -- -t classic-eu -f pdf
 npm run generate -- -i ./input/RamanaGangarao_resume.json -t tech-modern -o ./output
 ```
 
+### Without photo
+
+Keeps `basics.image` in JSON but skips embedding (useful for ATS markets that prefer no headshot):
+
+```bash
+npm run generate -- -i ./input/RamanaGangarao_resume.json -t tech-modern --no-photo
+```
+
+Output files use a `_nophoto` suffix so they do not overwrite the photo version.
+
 ### CLI flags
 
 | Flag | Default | Description |
@@ -101,6 +112,7 @@ npm run generate -- -i ./input/RamanaGangarao_resume.json -t tech-modern -o ./ou
 | `-t, --template` | *(interactive prompt)* | `tech-modern`, `classic-eu`, or `compact-sidebar` |
 | `-f, --format` | `pdf,docx` | Comma-separated: `pdf`, `docx` |
 | `-o, --outdir` | `./output` | Output directory (gitignored) |
+| `--no-photo` | off | Omit profile photo even if `basics.image` is set |
 
 ```bash
 npm run generate -- --help
@@ -111,6 +123,8 @@ npm run generate -- --help
 ```
 ./output/{Full_Name}_CV_{templateId}.pdf
 ./output/{Full_Name}_CV_{templateId}.docx
+./output/{Full_Name}_CV_{templateId}_nophoto.pdf   # with --no-photo
+./output/{Full_Name}_CV_{templateId}_nophoto.docx
 ```
 
 Example (dummy): `./output/Alex_Example_CV_tech-modern.pdf`
@@ -177,3 +191,30 @@ eu-cv-cli/
 
 - [`PLAN.md`](./PLAN.md) — architecture, watchlist, verification notes
 - [`input/README.md`](./input/README.md) — where to keep private resume data
+
+## Quick commands (copy-paste)
+
+Assumes private resume at `./input/RamanaGangarao_resume.json` and photo via `basics.image`.
+
+### With photo
+
+```bash
+npm run generate -- -i ./input/RamanaGangarao_resume.json -t tech-modern
+npm run generate -- -i ./input/RamanaGangarao_resume.json -t classic-eu
+npm run generate -- -i ./input/RamanaGangarao_resume.json -t compact-sidebar
+```
+
+### Without photo
+
+```bash
+npm run generate -- -i ./input/RamanaGangarao_resume.json -t tech-modern --no-photo
+npm run generate -- -i ./input/RamanaGangarao_resume.json -t classic-eu --no-photo
+npm run generate -- -i ./input/RamanaGangarao_resume.json -t compact-sidebar --no-photo
+```
+
+PDF only (faster):
+
+```bash
+npm run generate -- -i ./input/RamanaGangarao_resume.json -t tech-modern -f pdf
+npm run generate -- -i ./input/RamanaGangarao_resume.json -t tech-modern --no-photo -f pdf
+```

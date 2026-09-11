@@ -37,3 +37,6 @@ Thumbs.db
 *.log
 *.swp
 *~
+
+# Local Cursor agent rules (never push — personal workflow / attribution prefs)
+.cursor/
