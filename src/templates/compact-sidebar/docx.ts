@@ -144,10 +144,16 @@ export async function renderCompactSidebarDocx(
         titleDateRow(
           title,
           formatDateRange(ed.startDate, ed.endDate),
-          [ed.institution, ed.score].filter(Boolean).join(' · '),
+          [ed.institution, ed.location, ed.score].filter(Boolean).join(' · '),
         ),
       );
     }
+    if (eu?.degreeRecognition) {
+      children.push(bodyParagraph(eu.degreeRecognition, { color: MUTED }));
+    }
+  } else if (eu?.degreeRecognition) {
+    children.push(sectionHeading('Education', NAVY));
+    children.push(bodyParagraph(eu.degreeRecognition, { color: MUTED }));
   }
 
   if (data.certifications.length) {
@@ -182,11 +188,6 @@ export async function renderCompactSidebarDocx(
       }
       for (const h of p.highlights) children.push(bullet(h));
     }
-  }
-
-  if (eu?.degreeRecognition) {
-    children.push(sectionHeading('Credentials', NAVY));
-    children.push(bodyParagraph(eu.degreeRecognition));
   }
 
   return createDocDocument(children);

@@ -209,11 +209,12 @@ export function standardSections(data: ResumeData, accent = NAVY): FileChild[] {
   if (data.work.length) {
     children.push(sectionHeading('Experience', accent));
     for (const job of data.work) {
+      const subtitle = [job.name, job.location].filter(Boolean).join(' · ');
       children.push(
         titleDateRow(
-          `${job.position} — ${job.name}`,
+          job.position,
           formatDateRange(job.startDate, job.endDate),
-          job.location,
+          subtitle || undefined,
         ),
       );
       if (job.summary) children.push(bodyParagraph(job.summary, { italics: true, color: MUTED }));
@@ -232,14 +233,23 @@ export function standardSections(data: ResumeData, accent = NAVY): FileChild[] {
     children.push(sectionHeading('Education', accent));
     for (const ed of data.education) {
       const title = [ed.studyType, ed.area].filter(Boolean).join(', ');
+      const subtitle = [ed.institution, ed.location, ed.score ? `GPA: ${ed.score}` : undefined]
+        .filter(Boolean)
+        .join(' · ');
       children.push(
         titleDateRow(
-          `${title} — ${ed.institution}`,
+          title || ed.institution,
           formatDateRange(ed.startDate, ed.endDate),
-          ed.score ? `GPA: ${ed.score}` : undefined,
+          subtitle || undefined,
         ),
       );
     }
+    if (data.euMetadata?.degreeRecognition) {
+      children.push(bodyParagraph(data.euMetadata.degreeRecognition, { color: MUTED }));
+    }
+  } else if (data.euMetadata?.degreeRecognition) {
+    children.push(sectionHeading('Education', accent));
+    children.push(bodyParagraph(data.euMetadata.degreeRecognition, { color: MUTED }));
   }
 
   if (data.certifications.length) {
@@ -292,11 +302,6 @@ export function standardSections(data: ResumeData, accent = NAVY): FileChild[] {
       }
       for (const h of p.highlights) children.push(bullet(h));
     }
-  }
-
-  if (data.euMetadata?.degreeRecognition) {
-    children.push(sectionHeading('Credentials', accent));
-    children.push(bodyParagraph(data.euMetadata.degreeRecognition));
   }
 
   return children;

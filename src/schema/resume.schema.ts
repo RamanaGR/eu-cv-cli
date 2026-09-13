@@ -54,6 +54,7 @@ const educationSchema = z.object({
   institution: z.string(),
   area: z.string().optional(),
   studyType: z.string().optional(),
+  location: z.string().optional(),
   startDate: z.string().optional(),
   endDate: z.string().optional(),
   score: z.string().optional(),

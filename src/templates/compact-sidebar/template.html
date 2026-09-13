@@ -58,6 +58,7 @@
       margin-bottom: 12px;
       border-radius: 3px;
     }
+    .nowrap { white-space: nowrap; }
     h2 {
       font-size: 8.5pt;
       text-transform: uppercase;
@@ -75,13 +76,14 @@
       display: flex;
       justify-content: space-between;
       gap: 8px;
-      align-items: baseline;
+      align-items: flex-start;
       break-inside: avoid;
       break-after: avoid;
     }
+    .entry-main { flex: 1; min-width: 0; }
     .entry-title { font-weight: 700; font-size: 10pt; }
     .entry-sub { font-size: 8.5pt; color: #64748b; font-style: italic; }
-    .entry-dates { font-size: 8pt; color: #64748b; white-space: nowrap; }
+    .entry-dates { font-size: 8pt; color: #64748b; white-space: nowrap; flex-shrink: 0; }
     ul { margin: 3px 0 0 14px; }
     li { margin-bottom: 2px; }
     .muted { color: #64748b; font-size: 8pt; }
@@ -112,7 +114,7 @@
       <div class="eu-banner">
         {{#if euMetadata.workAuthorization}}{{euMetadata.workAuthorization}}<br/>{{/if}}
         {{#if euMetadata.relocation}}{{euMetadata.relocation}}<br/>{{else}}{{#if euMetadata.relocationReady}}Relocation-ready<br/>{{/if}}{{/if}}
-        {{#if euMetadata.noticePeriod}}Notice: {{euMetadata.noticePeriod}}<br/>{{/if}}
+        {{#if euMetadata.noticePeriod}}<span class="nowrap">Notice: {{euMetadata.noticePeriod}}</span><br/>{{/if}}
         {{#if euMetadata.preferredLocations.length}}{{joinList euMetadata.preferredLocations}}{{/if}}
       </div>
       {{/if}}
@@ -143,11 +145,6 @@
       </div>
       {{/each}}
       {{/if}}
-
-      {{#if euMetadata.degreeRecognition}}
-      <h2>Credentials</h2>
-      <div class="side-block">{{euMetadata.degreeRecognition}}</div>
-      {{/if}}
     </aside>
 
     <main class="main">
@@ -164,7 +161,7 @@
       {{#each work}}
       <div class="entry">
         <div class="entry-head">
-          <div>
+          <div class="entry-main">
             <div class="entry-title">{{position}}</div>
             <div class="entry-sub">{{name}}{{#if location}} · {{location}}{{/if}}</div>
           </div>
@@ -183,14 +180,17 @@
       {{#each education}}
       <div class="entry">
         <div class="entry-head">
-          <div>
+          <div class="entry-main">
             <div class="entry-title">{{#if studyType}}{{studyType}}{{#if area}}, {{area}}{{/if}}{{else}}{{area}}{{/if}}</div>
-            <div class="entry-sub">{{institution}}{{#if score}} · {{score}}{{/if}}</div>
+            <div class="entry-sub">{{institution}}{{#if location}} · {{location}}{{/if}}{{#if score}} · {{score}}{{/if}}</div>
           </div>
           <div class="entry-dates">{{formatDateRange startDate endDate}}</div>
         </div>
       </div>
       {{/each}}
+      {{#if euMetadata.degreeRecognition}}
+      <p class="muted">{{euMetadata.degreeRecognition}}</p>
+      {{/if}}
       {{/if}}
 
       {{#if projects.length}}
