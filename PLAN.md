@@ -127,7 +127,7 @@ Shared rules for every template:
 - ESM-safe HTML load via `fileURLToPath(import.meta.url)`.
 - Handlebars helpers registered once (dates, list join).
 - EU mobility banner (Blue Card / relocation / 30-day notice).
-- PDF CSS: `@page { size: A4; margin: 12mm 15mm; }`; `break-inside: avoid` on entries; charcoal `#1e293b`, borders `#e2e8f0`, navy accent.
+- PDF CSS: `@page { size: A4; margin: 12mm 15mm; }`; entries may split across pages (`break-inside: auto`) with title row kept together; charcoal `#1e293b`, borders `#e2e8f0`, navy accent.
 - DOCX: margins **720 dxa**; uppercase section headers with bottom border; role title/date tables with `width: { size: 100, type: WidthType.PERCENTAGE }` and cells **75% / 25%**; native bullets.
 
 Interface (`CVTemplate`):

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>{{basics.name}} — Cover Letter — {{company}}</title>
+  <style>
+    @page { size: A4; margin: 12mm 15mm; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "Segoe UI", Calibri, "Helvetica Neue", Arial, sans-serif;
+      color: #1e293b;
+      font-size: 10.5pt;
+      line-height: 1.45;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    .header {
+      border-bottom: 2px solid #1e3a5f;
+      padding-bottom: 12px;
+      margin-bottom: 14px;
+    }
+    h1 {
+      font-size: 22pt;
+      font-weight: 700;
+      color: #1e3a5f;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+    }
+    .label {
+      font-size: 11pt;
+      color: #475569;
+      margin-top: 4px;
+      font-weight: 500;
+    }
+    .contact {
+      font-size: 8.5pt;
+      color: #64748b;
+      margin-top: 8px;
+      word-break: break-word;
+    }
+    .contact a { color: #1e3a5f; text-decoration: none; }
+    .meta {
+      font-size: 10pt;
+      color: #475569;
+      margin-bottom: 16px;
+    }
+    .meta strong { color: #1e3a5f; }
+    .body p {
+      margin-bottom: 12px;
+      text-align: justify;
+    }
+    .body ul {
+      margin: 0 0 12px 18px;
+      padding: 0;
+    }
+    .body li {
+      margin-bottom: 6px;
+    }
+    .salutation { margin-bottom: 12px; }
+    .signoff { margin-top: 18px; }
+    .signoff .name {
+      margin-top: 14px;
+      font-weight: 600;
+      color: #1e3a5f;
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <h1>{{basics.name}}</h1>
+    {{#if basics.label}}<div class="label">{{basics.label}}</div>{{/if}}
+    <div class="contact">
+      {{#if basics.email}}<span>{{basics.email}}</span>{{/if}}
+      {{#if basics.phone}} · {{basics.phone}}{{/if}}
+      {{#if basics.url}} · <a href="{{basics.url}}">{{basics.url}}</a>{{/if}}
+      {{#if basics.location.city}} · {{basics.location.city}}{{#if basics.location.countryCode}}, {{basics.location.countryCode}}{{/if}}{{/if}}
+      {{#each basics.profiles}} · <a href="{{url}}">{{network}}</a>{{/each}}
+    </div>
+  </header>
+
+  <div class="meta">
+    <strong>Re:</strong> {{role}} — {{company}}
+  </div>
+
+  <div class="body">
+    <p class="salutation">Dear Hiring Manager,</p>
+    <p>{{opening}}</p>
+    <p>In particular, the following experience aligns closely with this role:</p>
+    <ul>
+      {{#each bullets}}
+      <li>{{this}}</li>
+      {{/each}}
+    </ul>
+    <p>{{closing}}</p>
+    <div class="signoff">
+      <p>Sincerely,</p>
+      <p class="name">{{basics.name}}</p>
+    </div>
+  </div>
+</body>
+</html>
